@@ -2,6 +2,9 @@ import type { Component } from 'solid-js';
 import logo from './logo.svg';
 import styles from './App.module.css';
 
+
+
+
 export const App1: Component<{ text: string }> = (props: { text: string }) => {
   console.warn(props);
   return (
