@@ -1,0 +1,13 @@
+.flex-vert {
+    display: flex;
+    flex-direction: column;
+}
+
+/* styles.module.css */
+.foo {
+    color: red;
+}
+
+.bar {
+    background-color: blue;
+}
