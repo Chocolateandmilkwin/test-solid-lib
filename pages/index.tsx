@@ -1,72 +1,81 @@
-import styles from "styles.module.css";
-import { createSignal } from 'solid-js';
+import styles from "./style.module.css";
+import { JSX, createSignal, mergeProps } from 'solid-js';
 import { For, render } from 'solid-js/web';
 import { createStore, produce } from 'solid-js/store';
+import { pointOnCircle } from "@chocolatelib/math"
 
-function Calculator() {
-  let [result, resultSet] = createSignal(0);
+
+export interface CirclePolygon extends Omit<JSX.PolygonSVGAttributes<SVGPolygonElement>, 'points'> {
+  cx: number
+  cy: number
+  r: number
+  points: number
+  angle?: number
+}
+
+function CirclePolygon(props: CirclePolygon) {
+  let points = () => {
+    let { x, y } = pointOnCircle(props.cx, props.cy, props.r, props.angle ?? 0)
+    let points = x + ' ' + y;
+    let div = 6.283185307179586 / props.points;
+    for (let i = 1; i < props.points; i++) {
+      let { x, y } = pointOnCircle(props.cx, props.cy, props.r, i * div + (props.angle ?? 0))
+      points += ',' + x + ' ' + y;
+    }
+    return points
+  }
   return (
-    <>
+    <polygon {...props} points={points()}></polygon>
+  );
+}
+
+export interface Hexagon extends Omit<JSX.PolygonSVGAttributes<SVGPolygonElement>, 'points'> {
+  cx: number
+  cy: number
+  r: number
+  angle?: number
+}
+function Hexagon(props: Hexagon) { return (<CirclePolygon {...props} points={6}></CirclePolygon>); }
+
+function HexagonCalculator() {
+  let [outerDia, outerDiaSet] = createSignal(10);
+  let outerRad = () => outerDia() / 2;
+  let side = () => outerDia() / 2;
+  let innerDia = () => outerDia() * 0.8660254037844386;
+  let innerRad = () => innerDia() / 2;
+  return (
+    <div class={`${styles["flex-horz"]}`}>
       <div class={`${styles["flex-vert"]}`}>
-        <div>{result()}</div>
-        <button>{ }</button>
+        <label>Outer Diameter/Radius</label>
+        <div class={`${styles["flex-horz"]}`}>
+          <input aria-label="Outer Diameter" type="number" value={outerDia()} oninput={e => outerDiaSet(e.target.valueAsNumber)}></input>
+          <input aria-label="Outer Radius" type="number" value={outerRad()} oninput={e => outerDiaSet(e.target.valueAsNumber * 2)}></input>
+        </div>
+        <label>Inner Diameter/Radius</label>
+        <div class={`${styles["flex-horz"]}`}>
+          <input aria-label="Inner Diameter" type="number" value={innerDia()} oninput={e => outerDiaSet(e.target.valueAsNumber / 0.8660254037844386)}></input>
+          <input aria-label="Inner Radius" type="number" value={innerRad()} oninput={e => outerDiaSet(e.target.valueAsNumber / 0.4330127018922193)}></input>
+        </div>
+        <label>Side Lenght</label>
+        <input aria-label="Side Lenght" type="number" value={side()} oninput={e => outerDiaSet(e.target.valueAsNumber * 2)}></input>
       </div>
-    </>
+      <svg viewBox="0 0 100 100">
+        <circle cx={50} cy={50} r={50} stroke-width={0.5} stroke="black" fill="none"></circle>
+        <circle cx={50} cy={50} r={43} stroke-width={0.5} stroke="black" fill="none"></circle>
+        <Hexagon cx={50} cy={50} r={50} stroke-width={0.5} stroke="black" fill="none"></Hexagon>
+      </svg>
+    </div>
   );
 }
 
-
-
-function ThemeContainer(test: number) {
-  return (
-    <div>{test}</div>
-  );
-}
-
-
-
-function HelloWorld2(test: number) {
-  return (
-    <div>{test}</div>
-  );
-}
-
-let asdf = [HelloWorld2(2)]
-for (let i = 0; i < 9; i++) {
-  asdf[i] = HelloWorld2(i);
-}
-
-let [yo1, yo2] = createStore(asdf)
 
 function HelloWorld() {
-  let [width, setwidth] = createSignal(10);
-  let count = 0;
   return (
     <>
-      <div>Hello World!</div>
-      <Calculator></Calculator>
-
-      <button onclick={() => yo2(produce((state) => { state.push(HelloWorld2(count++)) }))}>Hello World!</button>
-      <For each={yo1}>
-        {(cat, i) => {
-          console.log('yo');
-          return <div>{cat} + {i()}
-            <button onclick={() => yo2(produce((state) => { state.splice(i(), 1) }))}>asdf World!</button>
-          </div>
-        }}
-      </For>
-      <button onclick={() => setwidth(width() + 10)}>Hello World!</button>
-      <HelloWorld3 test={width()}></HelloWorld3>
+      <HexagonCalculator></HexagonCalculator>
     </>
   );
 }
 
-function HelloWorld3(params: { test: number }) {
-  return (
-    <svg>
-      <rect fill='red' width={params.test} height={10}></rect>
-    </svg>
-  );
-}
 
 render(() => <HelloWorld />, document.body)

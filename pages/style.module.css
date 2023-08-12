@@ -3,6 +3,11 @@
     flex-direction: column;
 }
 
+.flex-horz {
+    display: flex;
+    flex-direction: row;
+}
+
 /* styles.module.css */
 .foo {
     color: red;

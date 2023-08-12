@@ -41,6 +41,7 @@
   },
   "homepage": "https://github.com/ChocolateLibUI/lib#readme",
   "dependencies": {
+    "@chocolatelib/math": "^0.0.3",
     "solid-js": "^1.7.0"
   }
 }

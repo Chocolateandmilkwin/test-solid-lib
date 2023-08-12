@@ -297,6 +297,11 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
+"@chocolatelib/math@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@chocolatelib/math/-/math-0.0.3.tgz#1293c76915ca1d5b7285ea0ec01c5827e033d5a4"
+  integrity sha512-QwaGgxDqbQAdyTuj+EhVNEvoMYtPGW62HYcIq64WM/seaicbrSjwWxbXYz3nRUREeKTLsDY02enfuh1bK6S/Rw==
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
