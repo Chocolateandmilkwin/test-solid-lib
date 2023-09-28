@@ -14,7 +14,7 @@
     "build:lib": "tsc && vite build -m lib",
     "build:pages": "tsc && vite build -m pages",
     "build:tests": "tsc && vite build -m tests",
-    "serve:dev": "vite preview --mode pages",
+    "serve:pages": "vite preview --mode pages",
     "serve:tests": "vite preview --mode testServe",
     "test": "yarn run build:tests && start-server-and-test serve:tests http://localhost:999 'cypress run'",
     "watch": "start-server-and-test dev:tests http://localhost:999 'cypress open --e2e --browser edge'",
